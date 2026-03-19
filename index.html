@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio - Syren D. Calibo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:    '#001A2F',
+            deep:    '#00032F',
+            teal:    '#002F2D',
+            accent:  '#00D4C8',
+            accent2: '#0077FF',
+            pink:    '#FF2D78',
+          },
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --navy:   #001A2F;
+      --deep:   #00032F;
+      --teal:   #002F2D;
+      --accent: #00D4C8;
+      --accent2:#0077FF;
+      --pink:   #FF2D78;
+    }
+
+    * { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--deep);
+      font-family: 'DM Sans', sans-serif;
+      color: #e0f0ff;
+      overflow-x: hidden;
+    }
+
+    /* ─── Noise grain overlay ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: .4;
+    }
+
+    /* ─── Animated gradient mesh background ─── */
+    .bg-mesh {
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 30%, rgba(0,119,255,.13) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(0,212,200,.10) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 10%, rgba(0,47,45,.35) 0%, transparent 60%),
+        linear-gradient(160deg, #00032F 0%, #001A2F 50%, #002F2D 100%);
+      animation: meshShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes meshShift {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(15deg); }
+    }
+
+    /* ─── Navbar ─── */
+    nav {
+      background: rgba(0,3,47,.75);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(0,212,200,.10);
+    }
+    .nav-link {
+      position: relative;
+      color: #94b8d4;
+      font-weight: 500;
+      font-size: .85rem;
+      letter-spacing: .04em;
+      transition: color .25s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute; left: 0; bottom: -4px;
+      width: 0; height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width .3s ease;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--accent); }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* ─── Glowing orb behind profile photo ─── */
+    .orb-wrap {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .orb {
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, rgba(0,119,255,.35), rgba(0,212,200,.18) 50%, transparent 70%);
+      box-shadow:
+        0 0 80px 20px rgba(0,119,255,.25),
+        0 0 160px 40px rgba(0,212,200,.12);
+      animation: orbPulse 4s ease-in-out infinite;
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden;
+    }
+    @keyframes orbPulse {
+      0%, 100% { box-shadow: 0 0 80px 20px rgba(0,119,255,.25), 0 0 160px 40px rgba(0,212,200,.12); }
+      50%       { box-shadow: 0 0 110px 30px rgba(0,212,200,.30), 0 0 200px 60px rgba(0,119,255,.15); }
+    }
+    .orb-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0,212,200,.25);
+      animation: ringExpand 3.5s ease-in-out infinite;
+    }
+    .orb-ring:nth-child(1) { width: 370px; height: 370px; animation-delay: 0s; }
+    .orb-ring:nth-child(2) { width: 410px; height: 410px; animation-delay: .7s; border-color: rgba(0,119,255,.15); }
+    .orb-ring:nth-child(3) { width: 450px; height: 450px; animation-delay: 1.4s; border-color: rgba(0,212,200,.08); }
+    @keyframes ringExpand {
+      0%, 100% { transform: scale(1); opacity: .7; }
+      50%       { transform: scale(1.04); opacity: 1; }
+    }
+
+    .profile-photo {
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      position: relative; z-index: 2;
+      filter: drop-shadow(0 0 24px rgba(0,212,200,.3));
+    }
+
+    /* ─── Typed text cursor ─── */
+    .typed-cursor {
+      display: inline-block;
+      width: 3px; height: 1em;
+      background: var(--accent);
+      margin-left: 2px;
+      animation: blink .75s step-end infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff;
+      border-radius: 6px;
+      padding: .6rem 1.6rem;
+      font-weight: 600;
+      font-size: .9rem;
+      letter-spacing: .03em;
+      transition: all .3s;
+      box-shadow: 0 4px 20px rgba(0,119,255,.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,119,255,.5);
+    }
+    .btn-outline {
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      border-radius: 6px;
+      padding: .6rem 1.6rem;
+      font-weight: 600;
+      font-size: .9rem;
+      letter-spacing: .03em;
+      transition: all .3s;
+    }
+    .btn-outline:hover {
+      background: rgba(0,212,200,.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,212,200,.2);
+    }
+
+    /* ─── Download CV button ─── */
+    .btn-cv {
+      background: linear-gradient(135deg, var(--pink), #ff6b9d);
+      color: #fff;
+      border-radius: 24px;
+      padding: .45rem 1.3rem;
+      font-weight: 600;
+      font-size: .82rem;
+      letter-spacing: .05em;
+      transition: all .3s;
+      box-shadow: 0 4px 18px rgba(255,45,120,.35);
+    }
+    .btn-cv:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(255,45,120,.5);
+    }
+
+    /* ─── Social icons ─── */
+    .social-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,212,200,.1);
+      border: 1px solid rgba(0,212,200,.2);
+      color: var(--accent);
+      font-size: .85rem;
+      transition: all .25s;
+    }
+    .social-icon:hover {
+      background: var(--accent);
+      color: var(--deep);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,212,200,.35);
+    }
+
+    /* ─── Stats bar ─── */
+    .stats-bar {
+      background: rgba(0,26,47,.6);
+      border-top: 1px solid rgba(0,212,200,.12);
+      backdrop-filter: blur(12px);
+    }
+    .stat-item {
+      border-right: 1px solid rgba(0,212,200,.12);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #00D4C8, #0077FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── Section fade-in ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Skills section ─── */
+    .skill-bar-bg {
+      background: rgba(0,212,200,.1);
+      border-radius: 99px;
+      height: 6px;
+    }
+    .skill-bar-fill {
+      height: 6px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      width: 0;
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ─── Service cards ─── */
+    .service-card {
+      background: rgba(0,26,47,.7);
+      border: 1px solid rgba(0,212,200,.12);
+      border-radius: 16px;
+      transition: all .35s;
+      backdrop-filter: blur(8px);
+    }
+    .service-card:hover {
+      border-color: rgba(0,212,200,.45);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,212,200,.12);
+    }
+    .service-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    /* ─── Portfolio cards ─── */
+    .portfolio-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: rgba(0,26,47,.8);
+      border: 1px solid rgba(0,212,200,.1);
+      transition: all .35s;
+    }
+    .portfolio-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,119,255,.2);
+      border-color: rgba(0,212,200,.35);
+    }
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,3,47,.95) 0%, transparent 60%);
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--deep); }
+    ::-webkit-scrollbar-thumb { background: rgba(0,212,200,.35); border-radius: 3px; }
+
+    /* ─── Mobile nav ─── */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+  </style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<!-- ════════════════ NAVBAR ════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="#home" class="font-display font-800 text-xl tracking-tight">
+      <span class="text-white">Port</span><span class="text-accent">folio</span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#home"      class="nav-link active">Home</a>
+      <a href="#about"     class="nav-link">About</a>
+      <a href="#skills"    class="nav-link">Skills</a>
+      <a href="#services"  class="nav-link">Services</a>
+      <a href="#portfolio" class="nav-link">Portfolio</a>
+      <a href="#contact"   class="nav-link">Contact</a>
+    </div>
+
+    <!-- Right controls -->
+    <div class="hidden md:flex items-center gap-4">
+      <button id="theme-toggle" class="w-8 h-8 rounded-full border border-accent/30 flex items-center justify-center text-accent hover:bg-accent/10 transition-all text-sm">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="Syren Calibo_CV.pdf" download class="btn-cv flex items-center gap-2">
+        <span>Download CV</span>
+        <i class="fa-solid fa-arrow-down text-xs"></i>
+      </a>
+    </div>
+
+    <!-- Hamburger -->
+    <button id="hamburger" class="md:hidden text-accent text-xl">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="flex-col gap-4 pt-4 px-2 md:hidden">
+    <a href="#home"      class="nav-link">Home</a>
+    <a href="#about"     class="nav-link">About</a>
+    <a href="#skills"    class="nav-link">Skills</a>
+    <a href="#services"  class="nav-link">Services</a>
+    <a href="#portfolio" class="nav-link">Portfolio</a>
+    <a href="#contact"   class="nav-link">Contact</a>
+    <a href="Syren Calibo_CV.pdf" download class="btn-cv w-fit flex items-center gap-2">
+      Download CV <i class="fa-solid fa-arrow-down text-xs"></i>
+    </a>
+  </div>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section id="home" class="min-h-screen flex items-center pt-24 pb-8 px-6">
+  <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Photo -->
+    <div class="orb-wrap reveal order-2 lg:order-1" style="transition-delay:.1s">
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb">
+        <!-- Placeholder avatar using CSS if no image -->
+        <div class="profile-photo flex items-end justify-center" style="background: linear-gradient(160deg, rgba(0,119,255,.25), rgba(0,212,200,.15)); overflow:hidden;">
+          <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:absolute;top:0;left:0;">
+            <defs>
+              <radialGradient id="skinGrad" cx="50%" cy="40%" r="50%">
+                <stop offset="0%" stop-color="#f5c9a8"/>
+                <stop offset="100%" stop-color="#e8a882"/>
+              </radialGradient>
+              <radialGradient id="hairGrad" cx="50%" cy="20%" r="60%">
+                <stop offset="0%" stop-color="#2a1a0a"/>
+                <stop offset="100%" stop-color="#150c04"/>
+              </radialGradient>
+              <linearGradient id="suitGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1e3a5f"/>
+                <stop offset="100%" stop-color="#0a1a35"/>
+              </linearGradient>
+            </defs>
+            <!-- Body/Suit -->
+            <ellipse cx="150" cy="290" rx="110" ry="80" fill="url(#suitGrad)"/>
+            <!-- Neck -->
+            <rect x="133" y="200" width="34" height="40" rx="8" fill="url(#skinGrad)"/>
+            <!-- Shirt collar -->
+            <polygon points="150,215 130,240 170,240" fill="#a8c8e8" opacity=".6"/>
+            <!-- Head -->
+            <ellipse cx="150" cy="175" rx="62" ry="72" fill="url(#skinGrad)"/>
+            <!-- Hair top -->
+            <ellipse cx="150" cy="125" rx="66" ry="55" fill="url(#hairGrad)"/>
+            <!-- Hair sides -->
+            <ellipse cx="90" cy="165" rx="22" ry="45" fill="url(#hairGrad)"/>
+            <ellipse cx="210" cy="165" rx="22" ry="45" fill="url(#hairGrad)"/>
+            <!-- Eyes -->
+            <ellipse cx="128" cy="180" rx="10" ry="11" fill="#1a0a00"/>
+            <ellipse cx="172" cy="180" rx="10" ry="11" fill="#1a0a00"/>
+            <ellipse cx="130" cy="178" rx="4" ry="4.5" fill="#fff" opacity=".8"/>
+            <ellipse cx="174" cy="178" rx="4" ry="4.5" fill="#fff" opacity=".8"/>
+            <!-- Eyebrows -->
+            <path d="M116 167 Q128 163 140 167" stroke="#2a1a0a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M160 167 Q172 163 184 167" stroke="#2a1a0a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Nose -->
+            <ellipse cx="150" cy="196" rx="7" ry="5" fill="rgba(0,0,0,.08)"/>
+            <!-- Smile -->
+            <path d="M135 208 Q150 218 165 208" stroke="#c88060" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Lips -->
+            <ellipse cx="150" cy="210" rx="14" ry="5" fill="#d4856a" opacity=".6"/>
+            <!-- Glow effect on face -->
+            <ellipse cx="150" cy="175" rx="62" ry="72" fill="url(#skinGrad)" opacity="0"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="order-1 lg:order-2 reveal" style="transition-delay:.2s">
+      <p class="text-accent text-sm font-medium tracking-widest uppercase mb-3">Welcome to my portfolio</p>
+      <h1 class="font-display font-extrabold text-4xl md:text-5xl xl:text-6xl leading-tight mb-2">
+        Hello, I'm<br>
+        <span class="text-white">Syren D. Calibo</span>
+      </h1>
+      <h2 class="font-display text-2xl md:text-3xl font-bold mb-5">
+        And I'm a <span id="typed-text" class="text-accent"></span><span class="typed-cursor"></span>
+      </h2>
+      <p class="text-slate-400 text-sm leading-relaxed max-w-md mb-6">
+        Eager and dedicated Information Technology student with hands-on experience in full-stack web development, AI-powered applications, and mobile development.
+      </p>
+
+      <!-- Social icons -->
+      <div class="flex items-center gap-3 mb-8">
+        <a href="mailto:syrencalibo922@gmail.com" class="social-icon" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="tel:+639774242478" class="social-icon" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+        <a href="#contact" class="social-icon" aria-label="Location"><i class="fa-solid fa-location-dot"></i></a>
+        <a href="Syren Calibo_CV.pdf" download class="social-icon" aria-label="Download CV"><i class="fa-solid fa-file-arrow-down"></i></a>
+        <a href="#portfolio" class="social-icon" aria-label="Projects"><i class="fa-solid fa-diagram-project"></i></a>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex items-center gap-4 flex-wrap">
+        <a href="#contact" class="btn-primary">Hire Me</a>
+        <a href="#contact" class="btn-outline">Contact Me</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ STATS BAR ════════════════ -->
+<div class="stats-bar px-6 py-6 reveal">
+  <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4">
+    <div class="stat-item text-center py-4 px-6">
+      <div class="stat-num" data-count="4">0</div>
+      <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Major<br>Projects</p>
+    </div>
+    <div class="stat-item text-center py-4 px-6">
+      <div class="stat-num" data-count="3">0</div>
+      <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Core<br>Languages</p>
+    </div>
+    <div class="stat-item text-center py-4 px-6">
+      <div class="stat-num" data-count="3">0</div>
+      <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Frameworks<br>Used</p>
+    </div>
+    <div class="stat-item text-center py-4 px-6">
+      <div class="stat-num" data-count="2">0</div>
+      <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Years<br>Building</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ ABOUT ════════════════ -->
+<section id="about" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div class="reveal">
+      <div class="relative">
+        <div class="w-72 h-80 mx-auto rounded-2xl overflow-hidden" style="background: linear-gradient(145deg, rgba(0,119,255,.2), rgba(0,212,200,.1)); border: 1px solid rgba(0,212,200,.2); box-shadow: 0 0 60px rgba(0,119,255,.15);">
+          <div class="w-full h-full flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl" style="background: linear-gradient(135deg, rgba(0,119,255,.3), rgba(0,212,200,.2)); border: 2px solid rgba(0,212,200,.3);">
+                <i class="fa-solid fa-user text-accent"></i>
+              </div>
+              <p class="text-accent font-display font-bold text-xl">Syren D. Calibo</p>
+              <p class="text-slate-400 text-sm mt-1">BSIT Student and Developer</p>
+            </div>
+          </div>
+        </div>
+        <!-- Decorative accent squares -->
+        <div class="absolute -top-4 -left-4 w-16 h-16 rounded-xl border border-accent/30" style="background: rgba(0,212,200,.05);"></div>
+        <div class="absolute -bottom-4 -right-4 w-12 h-12 rounded-full border border-accent2/30" style="background: rgba(0,119,255,.05);"></div>
+      </div>
+    </div>
+
+    <div class="reveal" style="transition-delay:.15s">
+      <p class="text-accent text-xs font-medium tracking-widest uppercase mb-2">Get to know me</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl mb-4 text-white">About <span class="text-accent">Me</span></h2>
+      <p class="text-slate-400 text-sm leading-relaxed mb-4">
+        I am currently taking Bachelor of Science in Information Technology at Mindoro State University - Main Campus, and I focus on building practical systems that solve real community problems.
+      </p>
+      <p class="text-slate-400 text-sm leading-relaxed mb-6">
+        I have delivered full-stack web applications, mobile back-end features, and desktop systems. I am committed to quick learning, strong execution, and contributing to innovative real-world solutions.
+      </p>
+      <div class="grid grid-cols-2 gap-4 mb-8">
+        <div>
+          <p class="text-slate-500 text-xs mb-1">Name:</p>
+          <p class="text-white text-sm font-medium">Syren D. Calibo</p>
+        </div>
+        <div>
+          <p class="text-slate-500 text-xs mb-1">Email:</p>
+          <p class="text-accent text-sm font-medium">syrencalibo922@gmail.com</p>
+        </div>
+        <div>
+          <p class="text-slate-500 text-xs mb-1">Education:</p>
+          <p class="text-white text-sm font-medium">BSIT, Mindoro State University</p>
+        </div>
+        <div>
+          <p class="text-slate-500 text-xs mb-1">Location:</p>
+          <p class="text-green-400 text-sm font-medium">Alcate, Victoria, Oriental Mindoro</p>
+        </div>
+      </div>
+      <a href="Syren Calibo_CV.pdf" download class="btn-primary inline-flex items-center gap-2">
+        Download CV <i class="fa-solid fa-arrow-down text-xs"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SKILLS ════════════════ -->
+<section id="skills" class="py-24 px-6" style="background: rgba(0,26,47,.4);">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <p class="text-accent text-xs font-medium tracking-widest uppercase mb-2">What I know</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl text-white">My <span class="text-accent">Skills</span></h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 reveal" style="transition-delay:.1s">
+      <!-- Left -->
+      <div class="space-y-6">
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">Python</span>
+            <span class="text-xs text-accent">90%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">PHP</span>
+            <span class="text-xs text-accent">82%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="82"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">C#</span>
+            <span class="text-xs text-accent">80%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="80"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">Django</span>
+            <span class="text-xs text-accent">88%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="88"></div></div>
+        </div>
+      </div>
+      <!-- Right -->
+      <div class="space-y-6">
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">Ionic and Angular</span>
+            <span class="text-xs text-accent">84%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="84"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">CNN and Image Processing</span>
+            <span class="text-xs text-accent">86%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="86"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">Git and VS Code</span>
+            <span class="text-xs text-accent">85%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-white">Canva and Documentation</span>
+            <span class="text-xs text-accent">80%</span>
+          </div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="80"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech icons row -->
+    <div class="mt-14 flex flex-wrap justify-center gap-6 reveal" style="transition-delay:.2s">
+      <div class="flex flex-col items-center gap-2 group">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style="background: rgba(0,119,255,.15); border: 1px solid rgba(0,119,255,.2);">
+          <i class="fa-brands fa-html5 text-orange-400"></i>
+        </div>
+        <span class="text-xs text-slate-500">HTML5</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 group">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style="background: rgba(0,119,255,.15); border: 1px solid rgba(0,119,255,.2);">
+          <i class="fa-brands fa-css3-alt text-blue-400"></i>
+        </div>
+        <span class="text-xs text-slate-500">Django</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 group">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style="background: rgba(0,119,255,.15); border: 1px solid rgba(0,119,255,.2);">
+          <i class="fa-brands fa-js text-yellow-400"></i>
+        </div>
+        <span class="text-xs text-slate-500">Ionic</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 group">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style="background: rgba(0,119,255,.15); border: 1px solid rgba(0,119,255,.2);">
+          <i class="fa-brands fa-react text-cyan-400"></i>
+        </div>
+        <span class="text-xs text-slate-500">Angular</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 group">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style="background: rgba(0,119,255,.15); border: 1px solid rgba(0,119,255,.2);">
+          <i class="fa-brands fa-node-js text-green-400"></i>
+        </div>
+        <span class="text-xs text-slate-500">Python</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 group">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style="background: rgba(0,119,255,.15); border: 1px solid rgba(0,119,255,.2);">
+          <i class="fa-brands fa-figma text-purple-400"></i>
+        </div>
+        <span class="text-xs text-slate-500">C#</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SERVICES ════════════════ -->
+<section id="services" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <p class="text-accent text-xs font-medium tracking-widest uppercase mb-2">What I can do</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl text-white">My <span class="text-accent">Capabilities</span></h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="service-card p-7 reveal" style="transition-delay:.05s">
+        <div class="service-icon mb-5" style="background: rgba(0,119,255,.15);">
+          <i class="fa-solid fa-code text-accent2"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg text-white mb-3">Full-Stack Development</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Development of practical web systems using Django and modern tools, from feature planning to deployment-ready implementation.</p>
+        <a href="#" class="mt-5 inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all">
+          Learn more <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="service-card p-7 reveal" style="transition-delay:.1s">
+        <div class="service-icon mb-5" style="background: rgba(0,212,200,.12);">
+          <i class="fa-solid fa-palette text-accent"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg text-white mb-3">Mobile Back-End Support</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Back-end feature implementation for Ionic mobile apps including community announcements, events, and attendance workflows.</p>
+        <a href="#" class="mt-5 inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all">
+          Learn more <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="service-card p-7 reveal" style="transition-delay:.15s">
+        <div class="service-icon mb-5" style="background: rgba(255,45,120,.12);">
+          <i class="fa-solid fa-mobile-screen text-pink-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg text-white mb-3">AI-Powered Features</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Integration of CNN and image processing modules to build intelligent solutions such as crop disease detection systems.</p>
+        <a href="#" class="mt-5 inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all">
+          Learn more <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="service-card p-7 reveal" style="transition-delay:.2s">
+        <div class="service-icon mb-5" style="background: rgba(0,119,255,.15);">
+          <i class="fa-solid fa-magnifying-glass text-accent2"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg text-white mb-3">Desktop Application Development</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Creation of C# desktop systems for inventory, sales, and cost management with clear workflow logic and reliable data handling.</p>
+        <a href="#" class="mt-5 inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all">
+          Learn more <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="service-card p-7 reveal" style="transition-delay:.25s">
+        <div class="service-icon mb-5" style="background: rgba(0,212,200,.12);">
+          <i class="fa-solid fa-wand-magic-sparkles text-accent"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg text-white mb-3">Leadership and Facilitation</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Hands-on leadership in student and community initiatives, including facilitation roles in extension programs and tech events.</p>
+        <a href="#" class="mt-5 inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all">
+          Learn more <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="service-card p-7 reveal" style="transition-delay:.3s">
+        <div class="service-icon mb-5" style="background: rgba(255,45,120,.12);">
+          <i class="fa-solid fa-headset text-pink-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg text-white mb-3">Continuous Learning and Support</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Strong commitment to iteration, fast learning, and dependable collaboration while delivering and improving real-world solutions.</p>
+        <a href="#" class="mt-5 inline-flex items-center gap-2 text-accent text-sm font-medium hover:gap-3 transition-all">
+          Learn more <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PORTFOLIO ════════════════ -->
+<section id="portfolio" class="py-24 px-6" style="background: rgba(0,26,47,.4);">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <p class="text-accent text-xs font-medium tracking-widest uppercase mb-2">My work</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl text-white">Latest <span class="text-accent">Projects</span></h2>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex flex-wrap justify-center gap-3 mb-10 reveal">
+      <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium transition-all" data-filter="all">All</button>
+      <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all" data-filter="web">Web Design</button>
+      <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all" data-filter="app">App UI</button>
+      <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all" data-filter="brand">Branding</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
+      <!-- Card 1 -->
+      <div class="portfolio-card reveal group" data-category="web" style="transition-delay:.05s">
+        <div class="h-52 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(0,119,255,.3), rgba(0,212,200,.15));">
+          <i class="fa-solid fa-globe text-5xl text-accent opacity-60"></i>
+        </div>
+        <div class="portfolio-overlay"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <span class="text-xs text-accent uppercase tracking-widest">AI and Web System</span>
+          <h3 class="font-display font-bold text-white text-base mt-1">BANAe-Scan</h3>
+        </div>
+        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity" id="card1-icons">
+          <a href="#" class="w-8 h-8 rounded-full bg-accent/20 backdrop-blur flex items-center justify-center text-xs text-accent hover:bg-accent hover:text-deep transition-all"><i class="fa-solid fa-link"></i></a>
+          <a href="#" class="w-8 h-8 rounded-full bg-accent/20 backdrop-blur flex items-center justify-center text-xs text-accent hover:bg-accent hover:text-deep transition-all"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="portfolio-card reveal group" data-category="app" style="transition-delay:.1s">
+        <div class="h-52 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(255,45,120,.2), rgba(0,47,45,.3));">
+          <i class="fa-solid fa-mobile-screen text-5xl text-pink-400 opacity-60"></i>
+        </div>
+        <div class="portfolio-overlay"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <span class="text-xs text-pink-400 uppercase tracking-widest">Mobile Back-End</span>
+          <h3 class="font-display font-bold text-white text-base mt-1">Communex</h3>
+        </div>
+        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <a href="#" class="w-8 h-8 rounded-full bg-pink-400/20 backdrop-blur flex items-center justify-center text-xs text-pink-400 hover:bg-pink-400 hover:text-white transition-all"><i class="fa-solid fa-link"></i></a>
+          <a href="#" class="w-8 h-8 rounded-full bg-pink-400/20 backdrop-blur flex items-center justify-center text-xs text-pink-400 hover:bg-pink-400 hover:text-white transition-all"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="portfolio-card reveal group" data-category="brand" style="transition-delay:.15s">
+        <div class="h-52 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(0,212,200,.2), rgba(0,26,47,.5));">
+          <i class="fa-solid fa-vector-square text-5xl text-accent opacity-60"></i>
+        </div>
+        <div class="portfolio-overlay"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <span class="text-xs text-accent uppercase tracking-widest">Community Health System</span>
+          <h3 class="font-display font-bold text-white text-base mt-1">E-HealthCare</h3>
+        </div>
+        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <a href="#" class="w-8 h-8 rounded-full bg-accent/20 backdrop-blur flex items-center justify-center text-xs text-accent hover:bg-accent hover:text-deep transition-all"><i class="fa-solid fa-link"></i></a>
+          <a href="#" class="w-8 h-8 rounded-full bg-accent/20 backdrop-blur flex items-center justify-center text-xs text-accent hover:bg-accent hover:text-deep transition-all"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="portfolio-card reveal group" data-category="web" style="transition-delay:.2s">
+        <div class="h-52 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(0,119,255,.25), rgba(0,47,45,.35));">
+          <i class="fa-solid fa-newspaper text-5xl text-accent2 opacity-60"></i>
+        </div>
+        <div class="portfolio-overlay"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <span class="text-xs text-accent2 uppercase tracking-widest">Desktop Application</span>
+          <h3 class="font-display font-bold text-white text-base mt-1">Water Refilling System</h3>
+        </div>
+        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <a href="#" class="w-8 h-8 rounded-full bg-accent2/20 backdrop-blur flex items-center justify-center text-xs text-accent2 hover:bg-accent2 hover:text-white transition-all"><i class="fa-solid fa-link"></i></a>
+          <a href="#" class="w-8 h-8 rounded-full bg-accent2/20 backdrop-blur flex items-center justify-center text-xs text-accent2 hover:bg-accent2 hover:text-white transition-all"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="portfolio-card reveal group" data-category="app" style="transition-delay:.25s">
+        <div class="h-52 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(255,45,120,.15), rgba(0,3,47,.5));">
+          <i class="fa-solid fa-chart-line text-5xl text-pink-400 opacity-60"></i>
+        </div>
+        <div class="portfolio-overlay"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <span class="text-xs text-pink-400 uppercase tracking-widest">Seminar</span>
+          <h3 class="font-display font-bold text-white text-base mt-1">MIMAROPA Regional IT Congress</h3>
+        </div>
+        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <a href="#" class="w-8 h-8 rounded-full bg-pink-400/20 backdrop-blur flex items-center justify-center text-xs text-pink-400 hover:bg-pink-400 hover:text-white transition-all"><i class="fa-solid fa-link"></i></a>
+          <a href="#" class="w-8 h-8 rounded-full bg-pink-400/20 backdrop-blur flex items-center justify-center text-xs text-pink-400 hover:bg-pink-400 hover:text-white transition-all"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="portfolio-card reveal group" data-category="brand" style="transition-delay:.3s">
+        <div class="h-52 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(0,212,200,.15), rgba(0,119,255,.15));">
+          <i class="fa-solid fa-pen-nib text-5xl text-accent opacity-60"></i>
+        </div>
+        <div class="portfolio-overlay"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <span class="text-xs text-accent uppercase tracking-widest">Facilitation</span>
+          <h3 class="font-display font-bold text-white text-base mt-1">Project MINAS Extension Program</h3>
+        </div>
+        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <a href="#" class="w-8 h-8 rounded-full bg-accent/20 backdrop-blur flex items-center justify-center text-xs text-accent hover:bg-accent hover:text-deep transition-all"><i class="fa-solid fa-link"></i></a>
+          <a href="#" class="w-8 h-8 rounded-full bg-accent/20 backdrop-blur flex items-center justify-center text-xs text-accent hover:bg-accent hover:text-deep transition-all"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ CONTACT ════════════════ -->
+<section id="contact" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <p class="text-accent text-xs font-medium tracking-widest uppercase mb-2">Get in touch</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl text-white">Contact <span class="text-accent">Me</span></h2>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
+      <!-- Info -->
+      <div class="lg:col-span-2 reveal space-y-6">
+        <div class="flex items-start gap-4">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(0,212,200,.12); border: 1px solid rgba(0,212,200,.2);">
+            <i class="fa-solid fa-envelope text-accent text-sm"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Email</p>
+            <p class="text-white text-sm font-medium">syrencalibo922@gmail.com</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(0,119,255,.12); border: 1px solid rgba(0,119,255,.2);">
+            <i class="fa-solid fa-phone text-accent2 text-sm"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Phone</p>
+            <p class="text-white text-sm font-medium">09774242478</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(255,45,120,.12); border: 1px solid rgba(255,45,120,.2);">
+            <i class="fa-solid fa-location-dot text-pink-400 text-sm"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Location</p>
+            <p class="text-white text-sm font-medium">Alcate, Victoria, Oriental Mindoro</p>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <p class="text-xs text-slate-500 uppercase tracking-widest mb-4">Follow Me</p>
+          <div class="flex gap-3">
+            <a href="mailto:syrencalibo922@gmail.com" class="social-icon" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            <a href="tel:+639774242478" class="social-icon" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+            <a href="Syren Calibo_CV.pdf" download class="social-icon" aria-label="Download CV"><i class="fa-solid fa-file-arrow-down"></i></a>
+            <a href="#portfolio" class="social-icon" aria-label="Projects"><i class="fa-solid fa-diagram-project"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="lg:col-span-3 reveal" style="transition-delay:.1s">
+        <div class="space-y-4" style="background: rgba(0,26,47,.6); border: 1px solid rgba(0,212,200,.1); border-radius: 20px; padding: 2rem; backdrop-filter: blur(10px);">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs text-slate-400 block mb-2">Full Name</label>
+              <input type="text" placeholder="Your name" class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all"
+                style="background: rgba(0,3,47,.6); border: 1px solid rgba(0,212,200,.12);">
+            </div>
+            <div>
+              <label class="text-xs text-slate-400 block mb-2">Email Address</label>
+              <input type="email" placeholder="your@email.com" class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all"
+                style="background: rgba(0,3,47,.6); border: 1px solid rgba(0,212,200,.12);">
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400 block mb-2">Subject</label>
+            <input type="text" placeholder="Project inquiry..." class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all"
+              style="background: rgba(0,3,47,.6); border: 1px solid rgba(0,212,200,.12);">
+          </div>
+          <div>
+            <label class="text-xs text-slate-400 block mb-2">Message</label>
+            <textarea rows="5" placeholder="Tell me about your project..." class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 outline-none focus:border-accent/60 transition-all resize-none"
+              style="background: rgba(0,3,47,.6); border: 1px solid rgba(0,212,200,.12);"></textarea>
+          </div>
+          <button onclick="handleFormSubmit(this)" class="btn-primary w-full flex items-center justify-center gap-2 py-3">
+            <span>Send Message</span>
+            <i class="fa-solid fa-paper-plane text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer style="background: rgba(0,3,47,.9); border-top: 1px solid rgba(0,212,200,.1);" class="py-8 px-6 text-center">
+  <p class="font-display font-bold text-xl mb-2">
+    <span class="text-white">Port</span><span class="text-accent">folio</span>
+  </p>
+  <p class="text-slate-500 text-xs">© 2026 Syren D. Calibo. Crafted with heart and code.</p>
+</footer>
+
+<!-- Back to top -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-8 right-8 w-11 h-11 rounded-full flex items-center justify-center text-sm z-50 opacity-0 pointer-events-none transition-all"
+  style="background: linear-gradient(135deg, var(--accent2), var(--accent)); box-shadow: 0 4px 20px rgba(0,212,200,.35);">
+  <i class="fa-solid fa-chevron-up text-white"></i>
+</button>
+
+<script>
+// ── Typed text ──
+const roles = ['IT Student', 'Full-Stack Developer', 'AI-Powered App Builder', 'Back-End Developer'];
+let roleIdx = 0, charIdx = 0, isDeleting = false;
+const typedEl = document.getElementById('typed-text');
+function typeLoop() {
+  const current = roles[roleIdx];
+  if (!isDeleting) {
+    typedEl.textContent = current.slice(0, ++charIdx);
+    if (charIdx === current.length) { isDeleting = true; setTimeout(typeLoop, 1800); return; }
+  } else {
+    typedEl.textContent = current.slice(0, --charIdx);
+    if (charIdx === 0) { isDeleting = false; roleIdx = (roleIdx + 1) % roles.length; }
+  }
+  setTimeout(typeLoop, isDeleting ? 60 : 100);
+}
+typeLoop();
+
+// ── Scroll reveal ──
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: .12 });
+reveals.forEach(r => revealObs.observe(r));
+
+// ── Skill bars ──
+const skillObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    }
+  });
+}, { threshold: .3 });
+document.querySelectorAll('#skills .reveal').forEach(el => skillObs.observe(el));
+
+// ── Counter animation ──
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('[data-count]').forEach(el => {
+      const target = +el.dataset.count;
+      let cur = 0;
+      const step = Math.ceil(target / 40);
+      const t = setInterval(() => {
+        cur = Math.min(cur + step, target);
+        el.textContent = cur + '+';
+        if (cur >= target) clearInterval(t);
+      }, 40);
+    });
+    counterObs.unobserve(e.target);
+  });
+}, { threshold: .5 });
+document.querySelectorAll('.stats-bar').forEach(el => counterObs.observe(el));
+
+// ── Nav active on scroll ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  navLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+  // back to top
+  const btn = document.getElementById('back-top');
+  if (window.scrollY > 500) { btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
+  else { btn.style.opacity='0'; btn.style.pointerEvents='none'; }
+});
+
+// ── Portfolio filter ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+  btn.style.cssText = btn.classList.contains('active')
+    ? 'background: linear-gradient(135deg,#0077FF,#00D4C8); color:#fff; border: none;'
+    : 'background: rgba(0,26,47,.7); color: #94b8d4; border: 1px solid rgba(0,212,200,.15);';
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => {
+      b.classList.remove('active');
+      b.style.cssText = 'background: rgba(0,26,47,.7); color: #94b8d4; border: 1px solid rgba(0,212,200,.15);';
+    });
+    btn.classList.add('active');
+    btn.style.cssText = 'background: linear-gradient(135deg,#0077FF,#00D4C8); color:#fff; border: none;';
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.portfolio-card').forEach(card => {
+      const show = filter === 'all' || card.dataset.category === filter;
+      card.style.display = show ? '' : 'none';
+    });
+  });
+});
+
+// ── Hamburger ──
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+// ── Form submit ──
+function handleFormSubmit(btn) {
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> Message Sent!';
+  btn.style.background = 'linear-gradient(135deg, #00D4C8, #00a89e)';
+  setTimeout(() => {
+    btn.innerHTML = '<span>Send Message</span><i class="fa-solid fa-paper-plane text-sm"></i>';
+    btn.style.background = '';
+  }, 3000);
+}
+
+// ── Input focus glow ──
+document.querySelectorAll('input, textarea').forEach(el => {
+  el.addEventListener('focus', () => el.style.borderColor = 'rgba(0,212,200,.5)');
+  el.addEventListener('blur', () => el.style.borderColor = 'rgba(0,212,200,.12)');
+});
+</script>
+</body>
+</html>
